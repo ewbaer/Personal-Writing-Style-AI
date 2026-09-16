@@ -1,0 +1,164 @@
+ID,Type,AI Version,Ethan Rewrite
+1,LinkedIn Post,"I recently had the opportunity to work on an automation project that gave me a much better understanding of how technology can be used to improve everyday processes.
+
+The project focused on finding a task that normally takes a lot of manual work and building a way to make it faster and more consistent. While working on it, I was able to get more experience with automation tools, testing, debugging, and thinking through how a process should work from start to finish.
+
+One of the biggest things I learned was that getting the automation to work is only part of the job. It also has to be easy for other people to use, understand, and maintain. I spent a lot of time fixing smaller issues, testing different cases, and making changes based on feedback.
+
+There were definitely parts of the project that took longer than I expected, but that ended up being one of the most useful parts of the experience. Every issue forced me to slow down, figure out what was actually causing the problem, and find a better solution.
+
+Overall, this project helped me improve both my technical skills and the way I approach problems. I am looking forward to continuing to learn more about automation and software development and using what I learned on future projects.","Recently I had the chance to go and work on this automation project that allowed me to learn much more about how technology is able to be used to make everyday processes much better
+
+The project I was tasked with was finding a certain process that needs a lot of manual work and I designed and developed a way to make it both faster and more efficient. While doing this, I learned how automation tools work and the skills that go along with it such as testing, debugging, problem solving, etc.
+
+The biggest thing I learned throughout making this project was that making the automation work is one of the easiest steps in the development process. These automations have to be easy for other people to use, maintain, or update as well, especially people that aren't so familiar with technology. There was quite a bit of time that went into testing the code or fixing various smaller bugs.
+
+Of course, there were definitely a few parts of the project that took much more time than I had expected but as long as these parts were, I now realize how useful everything I learned is. Every problem I had made me stop and scan what I was doing wrong or what was causing an error, which led to me finding a solution. 
+
+All in all, this was a great project for me to better both my technical and problem solving skills. I'm excited to continue learning more about automation and software by using what I've learned in my future projects!"
+2,LinkedIn Post,"This summer, I had the opportunity to work as an Automation Engineer Intern at OSF HealthCare, where I spent a lot of my time working with UiPath and learning how automation can be used in a real healthcare environment.
+
+One of the projects I worked on involved automating the process of putting together presentations that were normally created by hand. The process required someone to find the correct files, organize the information, create the presentation, and send it to the people who needed it. I worked on building a UiPath automation that could handle a large part of that process automatically.
+
+Throughout the project, I got experience working with UiPath Studio, Orchestrator, Apps, and different parts of the automation development process. I also spent a lot of time testing the workflow and fixing problems that came up when the automation had to deal with different files or unexpected situations.
+
+One thing I learned from the project was how important it is to understand the process before trying to automate it. A process might look simple at first, but there can be a lot of smaller steps and exceptions that need to be considered.
+
+Working on this project gave me a much better understanding of RPA and what goes into building an automation that someone can actually use. It was a great experience getting to apply what I have learned in school to a real project.
+","This summer I had the chance to work as an Automation Engineer Intern at OSF HealthCare where I spent quite a bit of time using UiPath and learning how automation is able to be used in healthcare.
+
+One of the projects I was tasked with was automating how presentations were put together. Normally someone would have to go and find the right files, organize everything, make the presentation, and then send it to whoever needed it. I worked on developing a UiPath automation that could do a large part of this work for them.
+
+Throughout making this project, I got to work with different parts of UiPath such as Studio, Orchestrator, and Apps. A good amount of my time went into trying different files and working through whatever problems came up with them. Some of those problems took more looking into than others, but doing this gave me more practice with testing, debugging, and understanding my own workflow as well.
+
+I also learned how much there is to know about the way someone does their work before I can build something to do it for them. Something can seem pretty simple when someone explains it, but once you start working through it yourself there are smaller steps and exceptions that you have to account for as well.
+
+All in all, this was a great project for me to learn more about RPA and what goes into making an automation that other people can actually use. I enjoyed getting to take what I've learned in school and use it on a real project at OSF!
+"
+3,LinkedIn Post,"Recently, I worked on a project comparing Retrieval Augmented Generation, or RAG, with Context Augmented Generation to see how different ways of giving an LLM information can affect its answers.
+
+For the project, I used a single document as the main source of information and tested different ways of getting that information into the model. With RAG, the document was split into smaller chunks and the system searched for the chunks that were most related to the question. With the other approach, more of the document was placed directly into the model's context.
+
+I experimented with things such as chunk size and how many pieces of the document were retrieved for each question. I also had to think about the tradeoff between giving the model more information and using more context than was actually needed.
+
+What interested me most was seeing how much the setup around the model can affect the final response. Using the same language model does not always mean getting the same quality of answer. The way information is stored, searched, and passed into the model can make a large difference.
+
+This project gave me more experience working with LLMs, embeddings, vector search, and evaluating generated responses. It also helped me understand RAG beyond just knowing the definition and gave me a better idea of when it could actually be useful in a larger application.","Recently I worked on a project where I compared Retrieval Augmented Generation, or RAG, with Context Augmented Generation to learn more about how the information given to an LLM can change the answers it gives.
+
+For this project, I used one document as the source of information and tried different ways of giving that information to the model. With RAG, I split the document into smaller chunks that the system could search through to find what was relevant to the question. The other approach involved putting more of that text into the context from the start, so I wasn't relying on a search to pick out the parts for each question.
+
+While working on the RAG version, I tried changing how much text went into each chunk and how many chunks were passed along to the model. This gave me different versions to compare when looking through the answers it generated. I also had to think about whether the extra text was useful for the question or if I was just filling up more of the context with information it didn't need.
+
+The part I found most interesting was how much the setup around the model matters. Even when using the same model, the answers can be different depending on how you find the information and pass it in. This gave me more to think about besides which model I was using.
+
+Throughout making this project, I got more experience with LLMs and the tools that go along with them such as embeddings, vector search, and evaluating responses. I now have a better understanding of how RAG works from actually using it, and where I could use it in future projects!"
+4,LinkedIn Post,"I recently finished working on a software project that used computer vision to help keep track of available parking spaces in a parking lot.
+
+The idea behind the project was to take images from a camera and determine whether each parking space was empty or occupied. Instead of having someone manually keep track of available spaces, the program could process the image and update the number automatically.
+
+I started by defining the different parking areas in the image and then worked on detecting whether a vehicle was inside each one. One of the harder parts was dealing with changes in lighting, shadows, and vehicles that did not always park in exactly the same position. Something that worked well on one image did not always work as well on another, so I had to test the program using different conditions.
+
+I also created a simple interface that displayed the total number of open spaces and updated as new images were processed. This made it easier to see how the detection was performing instead of only looking at the output from the code.
+
+This project gave me a chance to work with Python and computer vision while also dealing with a problem that could have a practical use. It showed me how much testing matters when software has to work with information coming from the real world instead of clean data that always looks the same.","One of the projects I recently worked on was a program for counting open parking spaces using images of a parking lot. For this project, I got to use Python and learn more about computer vision by working on how the program could tell whether a car was parked in a certain space.
+
+The idea was to use images from a camera to figure out which spaces had cars in them and which ones were empty. Instead of someone having to count the spaces themselves, the program would go through the image and update the number for them.
+
+To get started, I had to mark where each parking space was in the image so the program knew which areas to check for cars. From there, I worked on detecting whether those spaces were occupied. There were definitely a few things that made this more difficult, especially when the lighting changed or a shadow covered part of a spot. The cars weren't always parked in the same position either. I could get it working on one image but then have problems with another, which meant there was quite a bit of testing involved.
+
+I also made a simple interface where someone could see the number of open spaces as new images were processed. Having the count displayed there gave me a way to check the results as it ran without needing to look through the code's output each time.
+
+The testing ended up being a big part of what I learned, especially with how different the images could be even though they were showing the same parking areas. I had to keep checking it with different conditions and figure out what was causing it to miss things. Working through that gave me more experience with both Python and the problems that come with using actual camera images."
+5,LinkedIn Post,"This summer, I had the opportunity to work as a Software Engineering Intern at Caterpillar, where I got experience working on software that supports real equipment and business operations.
+
+One of the projects I worked on involved improving an internal application that employees used to track equipment data and maintenance information. Part of the process was still being handled manually, which made it slower and easier for mistakes to happen. I helped work on changes that made it easier to enter, update, and view the information.
+
+A big part of the project was learning how the existing system worked before making any changes. I spent time reading through code, testing different parts of the application, and asking questions when I did not understand how something was connected. Once I got more comfortable with it, I was able to start making updates and fixing issues.
+
+I also learned more about working with a larger development team. Changes had to be reviewed, tested, and documented before they could be added to the main application. That was different from school projects where I usually had full control over everything I was working on.
+
+Overall, the internship gave me a much better idea of what software development looks like in a larger company. I learned a lot about working with existing systems, communicating with other developers, and making changes without causing problems somewhere else.
+","One thing I got to learn this summer at Caterpillar was how different it is to work on software that someone else has already built. As a Software Engineering Intern, I helped make changes to an application employees use for equipment data and maintenance information, so I had to spend some time understanding what was already there before I could do much with it.
+
+I went through the code and tried different parts of the application myself, along with asking questions when I wasn't sure how something worked. There was quite a bit to learn before getting into the updates, especially since I needed to understand how my part connected to the rest of it.
+
+The application was already being used, but employees still had to do some things manually that took time and could lead to errors. My work involved helping change how they entered information and went back to update or view it. These were things someone would need to do while using the application, so making them easier was the main purpose behind those changes.
+
+Something I wasn't as used to from school was having other developers involved in getting my work added to the application. I couldn't just finish a change and call it done, since it needed to be reviewed, tested, and documented first. There were other parts of the system to think about as well, even if I wasn't working on those parts myself.
+
+Looking back, quite a bit of what I learned came from figuring out the existing code and talking through it with the team. I got to see more of how software development works at a larger company, where people are already depending on what you're making changes to."
+6,LinkedIn Post,"Recently, I worked on a machine learning project where I trained a model to classify different types of images and compared how well different approaches worked.
+
+The dataset contained images from several different categories, and the goal was to see how accurately the model could identify what was shown in each image. I started by cleaning and organizing the data, then split it into training and testing sets so I could see how the model performed on images it had not seen before.
+
+One of the biggest things I noticed was how easy it was for the model to look good during training while still performing worse on new data. I had to make changes to the training setup and pay more attention to things like overfitting, image quality, and the amount of data being used.
+
+I also experimented with changing some of the model settings to see what had the biggest effect on the final results. Some changes helped more than I expected, while others barely made a difference.
+
+The project helped me understand machine learning better because I was able to see the whole process instead of only learning about the individual parts. It gave me more practice working with data, training models, testing results, and figuring out why a model might not be performing the way I expected.","For a recent machine learning project, I worked on training a model to identify images from different categories and tried a few approaches to see how the results would compare. Before I could do much with the model, I had to get the dataset cleaned up and organized, then separate what I was using for training from what I would use to test it afterward.
+
+One thing I noticed was how the model could look like it was learning everything pretty well and then do worse once I tested it with images it hadn't seen. The training results by themselves weren't enough to tell me whether it was working how I wanted, which meant I had to look into the setup more. Things such as overfitting and the quality of the images became a bigger part of what I needed to pay attention to, along with whether I was using enough data.
+
+While doing this, I also changed some of the model settings to see what would happen to the results. Some changes barely did anything, even when I thought they would, and others made more of a difference than I expected. I had to compare what I was getting from each approach instead of assuming a change would make it better.
+
+I liked being able to work through the project from getting the data ready all the way to checking the answers the model gave. It made more sense to me seeing these parts together, especially when there was a problem and I had to figure out whether it came from the data, the training, or something else in my setup."
+7,LinkedIn Post,"I recently finished working on a web application that was designed to help students keep track of assignments, due dates, and upcoming exams in one place.
+
+The main goal of the project was to make something simple that could replace having assignments spread across different websites, calendars, and notes. Users could create classes, add assignments, set due dates, and see everything that was coming up on one dashboard.
+
+I worked on both the front end and back end of the application. On the front end, I focused on making the pages easy to use and keeping the layout simple. On the back end, I worked on storing user data, loading assignments, and making sure changes were saved correctly.
+
+One problem I ran into was keeping everything updated when a user edited or deleted an assignment. It seemed simple at first, but there were a few cases where the page and the database were not showing the same information. Fixing that forced me to look more closely at how data was moving through the application.
+
+By the end of the project, I had a much better understanding of how the different parts of a full stack application work together. It also gave me more practice debugging problems that involved both the user interface and the database instead of only one part of the system.","I recently finished a web application for students who want to keep their assignments and upcoming exams together instead of having everything spread between websites, notes, and calendars. Someone using it can add their classes and assignments with the dates they're due, then look at a dashboard to see what they need to get done.
+
+For this project I worked on both the pages themselves and what happens to the information after someone enters it. I wanted the layout to be simple enough that a student could use it without having much to figure out first. There was also the work of saving their data and loading the assignments again, which needed to work correctly when they went back and changed something too.
+
+That ended up being one of the parts I had problems with. An assignment could be edited or deleted, but there were some cases where what showed on the page didn't match what was in the database. I had to look through how the information was moving through the application because just looking at the page wasn't telling me why it was wrong.
+
+Going back through those parts gave me a better understanding of how the front end and back end depend on each other. I was able to get more practice with the database and interface together, along with debugging the problems between them. It was useful getting to work on the whole application since I had to understand more than just the part someone would see when they opened it."
+8,LinkedIn Post,"This summer, I had the opportunity to work on a software project that involved moving an older application to a newer version of .NET.
+
+The application was still working, but it was running on an older setup that was becoming harder to maintain. Part of the project involved updating dependencies, fixing code that no longer worked the same way, and making sure the application still behaved correctly after everything was moved over.
+
+One of the harder parts was figuring out whether an issue was actually caused by the upgrade or if it had already existed before. I spent a lot of time testing different parts of the application and comparing the old version to the new one.
+
+I also got more experience working with Git, code reviews, and testing changes before they were merged. Since other people were also working in the same project, I had to be more careful about what I changed and make sure I understood how it could affect other parts of the application.
+
+The project gave me a better understanding of what goes into maintaining software after it has already been built. Writing something new can be easier in some ways because you get to decide how everything works. Updating an older system means working around decisions that were made years ago while still trying to improve it.","Recently I was able to work on an older application that needed moved from the version of .NET it was currently using to a newer one. The application was still working for what it was made for, but as it continued becoming older it was also becoming much more difficult to maintain and keep everything up to date.
+
+The main work that went into this project was updating the dependencies and going through the pieces of code that didn't work the same after being moved. There was also a good amount of testing involved because getting the application to open and run did not automatically mean every function inside of it still worked. I would test the new version and then go back to the original application when I found a problem so I could find out if the upgrade caused it, or if it was an error that had already been there.
+
+While doing this, I learned more about using Git and getting my work reviewed before it was able to be merged with the rest of the project. Other people were making changes to the same application as well, which meant I couldn't only focus on whether my own section worked because it could affect something another person was currently working on.
+
+I normally think making new software would be harder than updating something that has already been created, but this project showed me why that is not always true. When making something new you are able to choose how you want most of it to work, while an older application has code and decisions from years ago that still have to be dealt with. Overall, getting to work through those problems helped me better understand why software still needs quite a bit of work after the original version has already been finished."
+9,LinkedIn Post,"Recently, I worked on a project where I built a small recommendation system that could suggest movies based on what a user had watched and rated before.
+
+I started by working with a dataset that contained user ratings for different movies. The first step was cleaning the data and figuring out how I wanted to compare users and movies. From there, I tested a few different ways of making recommendations and compared the results.
+
+One approach looked at users who had similar ratings and used that information to suggest movies. Another approach focused more on similarities between the movies themselves. It was interesting seeing how the recommendations changed depending on which method I used.
+
+One thing I ran into was that the system worked much better for users who already had a decent amount of rating history. When there was not much information about a user, it became harder to figure out what they would actually like. That helped me understand the cold start problem better than just reading about it.
+
+The project gave me more practice with Python, data processing, and machine learning while also showing me some of the limits these systems have. It was a good example of how a model can work correctly but still have problems depending on how much information it is given.","Recently I made a small recommendation system for movies, and one of the problems I had was figuring out what to recommend when a user had barely rated anything. For people with more ratings it had something to work with, but without that history there wasn't much to tell it what the person would actually like.
+
+The project used a dataset of movie ratings that I cleaned up before trying different ways of making suggestions. I needed to figure out how I wanted to compare the information, so one approach I tried was looking for people who gave similar ratings and using those to suggest movies. Another was based more on how similar the movies were to each other. These didn't always give the same suggestions, which gave me a way to compare what each approach was doing.
+
+While working through this, I got more practice with Python and processing the data, along with the machine learning side of making recommendations. There were things I could get working in the program that still depended on how much information was available for a certain user.
+
+That's where the cold start problem started making more sense to me. I could read about why it happens, but having to deal with a user who didn't have enough ratings made me see what the problem actually meant for my project. The system still needed to suggest something to them, even though it knew much less about them than someone who had rated a lot of movies.
+
+I liked getting to compare the approaches myself and see where they had problems. It gave me more to think about with recommendation systems besides whether the code was running correctly."
+10,LinkedIn Post,"As my summer internship at OSF Innovation comes to a close, I wanted to take a moment to reflect on my experience working with the Advanced Analytics team as an Automation Engineer Intern.
+
+Over the past few months, I had the opportunity to gain a better understanding of the technical side of healthcare while contributing to several automation projects. I was able to work on solutions from the feature branch stage all the way through deployment to production, which gave me valuable experience with the full development process.
+
+One of the highlights of the summer was also placing in the top three during a team hackathon. Throughout the internship, I was able to strengthen my skills with UiPath, automation development, testing, debugging, and working as part of a larger technical team.
+
+I am incredibly grateful to my manager, Joseph Gannuscio, and my mentor, Gianna Vitale, for their guidance, support, and everything they taught me throughout the summer. Their help made this experience both valuable and enjoyable.
+
+I am excited to continue working with the team throughout the school year and look forward to continuing to learn, grow, and take on new challenges.","As my summer internship at OSF Innovation comes to an end, I wanted to share a little about my experience on the Advanced Analytics team as an Automation Engineer Intern.
+
+In just the past few months, I got the chance to see what the technical side of healthcare looks like, build multiple new automations from a feature branch all the way to production, placed top 3 in a team hackathon, and experience all the joys UiPath has to offer.
+
+Couldn't be more grateful for both my manager Joseph Gannuscio and mentor Gianna Vitale for the amazing experience. Excited to be continuing with the team throughout the school year and can't wait to see what's next!"
