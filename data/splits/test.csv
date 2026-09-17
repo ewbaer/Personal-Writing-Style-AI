@@ -1,0 +1,31 @@
+ID,Type,AI Version,Ethan Rewrite
+9,LinkedIn Post,"Recently, I worked on a project where I built a small recommendation system that could suggest movies based on what a user had watched and rated before.
+
+I started by working with a dataset that contained user ratings for different movies. The first step was cleaning the data and figuring out how I wanted to compare users and movies. From there, I tested a few different ways of making recommendations and compared the results.
+
+One approach looked at users who had similar ratings and used that information to suggest movies. Another approach focused more on similarities between the movies themselves. It was interesting seeing how the recommendations changed depending on which method I used.
+
+One thing I ran into was that the system worked much better for users who already had a decent amount of rating history. When there was not much information about a user, it became harder to figure out what they would actually like. That helped me understand the cold start problem better than just reading about it.
+
+The project gave me more practice with Python, data processing, and machine learning while also showing me some of the limits these systems have. It was a good example of how a model can work correctly but still have problems depending on how much information it is given.","Recently I made a small recommendation system for movies, and one of the problems I had was figuring out what to recommend when a user had barely rated anything. For people with more ratings it had something to work with, but without that history there wasn't much to tell it what the person would actually like.
+
+The project used a dataset of movie ratings that I cleaned up before trying different ways of making suggestions. I needed to figure out how I wanted to compare the information, so one approach I tried was looking for people who gave similar ratings and using those to suggest movies. Another was based more on how similar the movies were to each other. These didn't always give the same suggestions, which gave me a way to compare what each approach was doing.
+
+While working through this, I got more practice with Python and processing the data, along with the machine learning side of making recommendations. There were things I could get working in the program that still depended on how much information was available for a certain user.
+
+That's where the cold start problem started making more sense to me. I could read about why it happens, but having to deal with a user who didn't have enough ratings made me see what the problem actually meant for my project. The system still needed to suggest something to them, even though it knew much less about them than someone who had rated a lot of movies.
+
+I liked getting to compare the approaches myself and see where they had problems. It gave me more to think about with recommendation systems besides whether the code was running correctly."
+10,LinkedIn Post,"As my summer internship at OSF Innovation comes to a close, I wanted to take a moment to reflect on my experience working with the Advanced Analytics team as an Automation Engineer Intern.
+
+Over the past few months, I had the opportunity to gain a better understanding of the technical side of healthcare while contributing to several automation projects. I was able to work on solutions from the feature branch stage all the way through deployment to production, which gave me valuable experience with the full development process.
+
+One of the highlights of the summer was also placing in the top three during a team hackathon. Throughout the internship, I was able to strengthen my skills with UiPath, automation development, testing, debugging, and working as part of a larger technical team.
+
+I am incredibly grateful to my manager, Joseph Gannuscio, and my mentor, Gianna Vitale, for their guidance, support, and everything they taught me throughout the summer. Their help made this experience both valuable and enjoyable.
+
+I am excited to continue working with the team throughout the school year and look forward to continuing to learn, grow, and take on new challenges.","As my summer internship at OSF Innovation comes to an end, I wanted to share a little about my experience on the Advanced Analytics team as an Automation Engineer Intern.
+
+In just the past few months, I got the chance to see what the technical side of healthcare looks like, build multiple new automations from a feature branch all the way to production, placed top 3 in a team hackathon, and experience all the joys UiPath has to offer.
+
+Couldn't be more grateful for both my manager Joseph Gannuscio and mentor Gianna Vitale for the amazing experience. Excited to be continuing with the team throughout the school year and can't wait to see what's next!"

@@ -1,0 +1,31 @@
+ID,Type,AI Version,Ethan Rewrite
+7,LinkedIn Post,"I recently finished working on a web application that was designed to help students keep track of assignments, due dates, and upcoming exams in one place.
+
+The main goal of the project was to make something simple that could replace having assignments spread across different websites, calendars, and notes. Users could create classes, add assignments, set due dates, and see everything that was coming up on one dashboard.
+
+I worked on both the front end and back end of the application. On the front end, I focused on making the pages easy to use and keeping the layout simple. On the back end, I worked on storing user data, loading assignments, and making sure changes were saved correctly.
+
+One problem I ran into was keeping everything updated when a user edited or deleted an assignment. It seemed simple at first, but there were a few cases where the page and the database were not showing the same information. Fixing that forced me to look more closely at how data was moving through the application.
+
+By the end of the project, I had a much better understanding of how the different parts of a full stack application work together. It also gave me more practice debugging problems that involved both the user interface and the database instead of only one part of the system.","I recently finished a web application for students who want to keep their assignments and upcoming exams together instead of having everything spread between websites, notes, and calendars. Someone using it can add their classes and assignments with the dates they're due, then look at a dashboard to see what they need to get done.
+
+For this project I worked on both the pages themselves and what happens to the information after someone enters it. I wanted the layout to be simple enough that a student could use it without having much to figure out first. There was also the work of saving their data and loading the assignments again, which needed to work correctly when they went back and changed something too.
+
+That ended up being one of the parts I had problems with. An assignment could be edited or deleted, but there were some cases where what showed on the page didn't match what was in the database. I had to look through how the information was moving through the application because just looking at the page wasn't telling me why it was wrong.
+
+Going back through those parts gave me a better understanding of how the front end and back end depend on each other. I was able to get more practice with the database and interface together, along with debugging the problems between them. It was useful getting to work on the whole application since I had to understand more than just the part someone would see when they opened it."
+8,LinkedIn Post,"This summer, I had the opportunity to work on a software project that involved moving an older application to a newer version of .NET.
+
+The application was still working, but it was running on an older setup that was becoming harder to maintain. Part of the project involved updating dependencies, fixing code that no longer worked the same way, and making sure the application still behaved correctly after everything was moved over.
+
+One of the harder parts was figuring out whether an issue was actually caused by the upgrade or if it had already existed before. I spent a lot of time testing different parts of the application and comparing the old version to the new one.
+
+I also got more experience working with Git, code reviews, and testing changes before they were merged. Since other people were also working in the same project, I had to be more careful about what I changed and make sure I understood how it could affect other parts of the application.
+
+The project gave me a better understanding of what goes into maintaining software after it has already been built. Writing something new can be easier in some ways because you get to decide how everything works. Updating an older system means working around decisions that were made years ago while still trying to improve it.","Recently I was able to work on an older application that needed moved from the version of .NET it was currently using to a newer one. The application was still working for what it was made for, but as it continued becoming older it was also becoming much more difficult to maintain and keep everything up to date.
+
+The main work that went into this project was updating the dependencies and going through the pieces of code that didn't work the same after being moved. There was also a good amount of testing involved because getting the application to open and run did not automatically mean every function inside of it still worked. I would test the new version and then go back to the original application when I found a problem so I could find out if the upgrade caused it, or if it was an error that had already been there.
+
+While doing this, I learned more about using Git and getting my work reviewed before it was able to be merged with the rest of the project. Other people were making changes to the same application as well, which meant I couldn't only focus on whether my own section worked because it could affect something another person was currently working on.
+
+I normally think making new software would be harder than updating something that has already been created, but this project showed me why that is not always true. When making something new you are able to choose how you want most of it to work, while an older application has code and decisions from years ago that still have to be dealt with. Overall, getting to work through those problems helped me better understand why software still needs quite a bit of work after the original version has already been finished."
