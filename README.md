@@ -1,84 +1,121 @@
 # Personal Writing Style AI
 
-## About
+A local web app that rewrites AI-generated text using examples of a person’s writing. The goal is to match their wording, tone, and sentence structure while keeping the original meaning.
 
-For this project, I’m building an AI that can rewrite generated text to sound more like the person using it. The user will give it examples of their writing so it can pick up on things like the words they use, sentence length, and how they explain ideas.
+## Project Question
 
-The goal is to match their writing style without changing what the original text means.
+Does training a model on someone’s writing produce better results than giving an existing model instructions and writing examples?
 
-## Main Question
+## Current State
 
-Does training a model on someone's writing help it match their style better than just giving a regular model instructions and examples?
+The project has a working Python/Flask prototype. It started in Jupyter on the LAUNCH cluster and now runs as a local web app.
 
-## What I’m Testing
+The app uses **Qwen2.5-3B-Instruct** to rewrite text with two options:
 
-I’m going to compare a few ways of rewriting the same text:
+- **General rewrite:** Uses basic rewriting instructions.
+- **With my examples:** Includes personal writing samples in the prompt.
 
-* **Basic prompting:** Tell the model how I want the text to sound.
-* **Prompting with examples:** Give it a few writing samples to follow.
-* **RAG:** Have it find useful examples from saved writing and use those when rewriting.
-* **LoRA or QLoRA:** Train a model adapter using AI text paired with preferred rewrites.
+The current model has **not been fine-tuned**. These options use prompting, and DPO training is the next main step.
 
-I also want to see whether giving the model more examples or more context improves the results.
+## Working Features
 
-## Dataset
+- Two-column editor for the original text and rewritten output.
+- Light and dark mode.
+- Word counts for both versions.
+- Editable output and a copy button.
+- JSON export for saving results.
+- Local model inference using an NVIDIA GPU.
 
-Right now, I have nine LinkedIn writing examples. I plan to add more as I work on the project, with most texts being around 200–250 words.
+The app has run successfully on an RTX 5070 Ti. Laptop setup is also underway for an RTX 4050 with 6 GB of GPU memory, which needs a lower-memory model configuration.
 
-For each pair, I’ll save the original AI text and the edited version. I’ll also record the topic, writing type, and whether the rewrite was done by a person or AI.
+## Data
 
-If other people contribute examples, I’ll keep track of which samples belong to each writer without using their names. Their writing could help with general rewriting, but it would not count as my personal style.
+The personal dataset currently contains 10 LinkedIn posts, each with an AI version and my own rewrite.
 
-I’ll set aside some examples for testing so the model does not get to use them during training or as examples in its prompts.
+| Column | Contents |
+|---|---|
+| ID | Unique example number |
+| Type | Type of writing |
+| AI Version | Original AI-generated text |
+| Ethan Rewrite | My rewritten version |
 
-## How It Will Work
+The notebook checks for missing and repeated entries, counts words, and creates training, validation, and test splits. The current split contains six training examples, two validation examples, and two test examples.
 
-1. Read the user's writing samples.
-2. Look for patterns in how they write.
-3. Rewrite the input using the chosen method.
-4. Check that the meaning stayed the same.
-5. Save the results so the methods can be compared.
+This small dataset is useful for testing the workflow, but it is not enough to draw strong conclusions about model performance.
 
-I also plan to save what the system learns about the user's style so it does not have to start over each time. Some steps will pass information through JSON files, which I’ll check for errors.
+A Google Form has been shared with my professor to collect more student rewrites. Each student chooses one AI-generated LinkedIn post and rewrites it in their own words. These responses will represent different writers, so they will be kept separate from my personal writing examples.
 
-## Testing
+## Experiments So Far
 
-The main things I’ll look at are:
+I compared a basic rewrite prompt with a prompt containing three writing examples and saved the results.
 
-* Does the rewrite sound like the user?
-* Does it keep the original meaning and facts?
-* Is it clear and easy to read?
-* How long does it take?
-* How much context and computing power does it need?
+The example-based output showed some differences in wording and structure, but the early results do not yet show a clear improvement in matching my style.
 
-Each method will get the same test inputs to make the comparison fair. I may also record AI detector scores, but those scores alone will not show whether the writing is good or sounds like the user.
+I am also reviewing public datasets, including De-GPT-DPO, for an initial training experiment. Any public data will need to be checked for quality and adapted to the rewriting task before use.
 
-Other tests will cover empty inputs, unusual text, broken JSON, saved style preferences, and inputs that try to make the model ignore its instructions.
+## Training Plan
 
-## Project Folders
+The planned training method is **Direct Preference Optimization (DPO)**.
 
-| Folder       | What it contains                                             |
-| ------------ | ------------------------------------------------------------ |
-| `notebooks/` | Jupyter notebooks for preparing data and running experiments |
-| `src/`       | Python code used throughout the project                      |
-| `data/`      | Dataset notes and samples that can be shared                 |
-| `results/`   | Test scores and rewritten outputs                            |
-| `docs/`      | Project proposal, test plan, and other notes                 |
+Each training example will contain:
 
-## Setup
+- A rewriting request and its original text.
+- A preferred rewrite.
+- A less-preferred rewrite.
 
-I’m using Python and Jupyter Notebook on the LAUNCH cluster with an NVIDIA A30 GPU.
+Preferences will consider writing style, readability, and whether the rewrite preserves the original facts. A human-written response will not automatically be treated as better without reviewing it.
 
-I’ll add the required packages and steps for running the project as I build it. Private writing samples, API tokens, downloaded models, and training checkpoints will stay out of the repo.
+The trained model will be compared with the existing prompting methods using the same held-out inputs. A second model or training method has not been finalized.
 
-## Current Progress
+## Evaluation
 
-* Created the GitHub repo and project folders.
-* Collected nine LinkedIn writing examples.
-* Working on organizing the data before testing the first model.
+The main questions are:
 
-Training, testing, and the UI still need to be built.
+- Does the rewrite sound like the intended writer?
+- Does it preserve the original meaning and facts?
+- Is it clear and readable?
+- How long does generation take?
+- How much GPU memory and context does it use?
 
-## Final Demo
+AI detector scores are being explored as an additional measurement. Automatic detector integration is not yet complete, and a detector score will not be treated as proof that text is human-written or as a measure of personal style.
 
-The user will provide writing samples and some text they want rewritten. The demo will show the original text alongside the different rewrites so we can compare how well each method follows their style.
+## Running the App
+
+After setting up the project’s Python environment and dependencies, run this from the repository’s main folder in PowerShell:
+
+```powershell
+.\start_app.bat
+```
+
+Then open:
+
+```text
+http://127.0.0.1:7860
+```
+
+Keep the terminal open while using the app.
+
+The model downloads on its first use and is cached for later sessions. Restarting the app still requires loading the model into memory.
+
+## Main Files
+
+| File or folder | Purpose |
+|---|---|
+| `app.py` | Flask server and API routes |
+| `rewrite_engine.py` | Model loading, prompts, and text generation |
+| `web/` | Interface, styling, and browser code |
+| `check_gpu.py` | GPU availability and calculation check |
+| `start_app.bat` | Windows launcher |
+| `requirements-local.txt` | Local app dependencies |
+| `notebooks/` | Data checks and early experiments |
+| `data/` | Writing examples and dataset splits |
+| `results/` | Saved experiment outputs |
+
+## Next Steps
+
+- Review student responses when they arrive.
+- Prepare and check preference pairs for DPO.
+- Run a small training experiment.
+- Compare trained and untrained outputs on held-out examples.
+- Add an optional detector score to the interface.
+- Test empty inputs, long text, failed requests, and saved-result handling.
