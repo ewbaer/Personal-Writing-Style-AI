@@ -1,0 +1,106 @@
+{
+  "version": "2026-10-15T15:13:49.302477+00:00",
+  "threshold": 0.5,
+  "warning": "Pilot only. Scores are not independently calibrated. Test on separate LinkedIn data before making claims.",
+  "dataset_sha256": "58fac540ade194886726dd61e934e1174b64ce404cd3b59d15df6239c993d49f",
+  "counts": {
+    "test": {
+      "1": 2026,
+      "0": 1974
+    },
+    "train": {
+      "0": 6014,
+      "1": 5986
+    },
+    "validation": {
+      "0": 2012,
+      "1": 1988
+    }
+  },
+  "validation": {
+    "classification": {
+      "human": {
+        "precision": 0.9857283464566929,
+        "recall": 0.9955268389662028,
+        "f1-score": 0.9906033630069239,
+        "support": 2012.0
+      },
+      "ai": {
+        "precision": 0.9954268292682927,
+        "recall": 0.9854124748490946,
+        "f1-score": 0.9903943377148635,
+        "support": 1988.0
+      },
+      "accuracy": 0.9905,
+      "macro avg": {
+        "precision": 0.9905775878624928,
+        "recall": 0.9904696569076487,
+        "f1-score": 0.9904988503608937,
+        "support": 4000.0
+      },
+      "weighted avg": {
+        "precision": 0.9905484924140581,
+        "recall": 0.9905,
+        "f1-score": 0.9904994774367699,
+        "support": 4000.0
+      }
+    },
+    "human_false_positive_rate": 0.0044731610337972166,
+    "ai_recall": 0.9854124748490946,
+    "roc_auc": 0.9991094679408459,
+    "brier_score": 0.018212347583934148,
+    "confusion_matrix": [
+      [
+        2003,
+        9
+      ],
+      [
+        29,
+        1959
+      ]
+    ]
+  },
+  "test": {
+    "classification": {
+      "human": {
+        "precision": 0.9839598997493735,
+        "recall": 0.9944275582573455,
+        "f1-score": 0.9891660367850844,
+        "support": 1974.0
+      },
+      "ai": {
+        "precision": 0.9945137157107232,
+        "recall": 0.9842053307008884,
+        "f1-score": 0.9893326717935996,
+        "support": 2026.0
+      },
+      "accuracy": 0.98925,
+      "macro avg": {
+        "precision": 0.9892368077300484,
+        "recall": 0.9893164444791169,
+        "f1-score": 0.989249354289342,
+        "support": 4000.0
+      },
+      "weighted avg": {
+        "precision": 0.989305407533797,
+        "recall": 0.98925,
+        "f1-score": 0.9892504374168973,
+        "support": 4000.0
+      }
+    },
+    "human_false_positive_rate": 0.005572441742654508,
+    "ai_recall": 0.9842053307008884,
+    "roc_auc": 0.9990433383241768,
+    "brier_score": 0.01849559107870065,
+    "confusion_matrix": [
+      [
+        1963,
+        11
+      ],
+      [
+        32,
+        1994
+      ]
+    ]
+  }
+}

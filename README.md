@@ -1,121 +1,76 @@
 # Personal Writing Style AI
 
-A local web app that rewrites AI-generated text using examples of a person’s writing. The goal is to match their wording, tone, and sentence structure while keeping the original meaning.
+A local Python/Flask app that rewrites text using Qwen2.5-3B-Instruct and optional examples of my writing. The goal is to match the user's style while keeping the original meaning.
 
-## Project Question
+**To run or restore the project, read [docs/RESTORE.md](docs/RESTORE.md).**
 
-Does training a model on someone’s writing produce better results than giving an existing model instructions and writing examples?
+## Current state
 
-## Current State
+The rewriting model uses prompting. It has not been DPO-trained. General rewrite uses instructions; My examples adds up to three writing pairs from the training split and excludes a matching input. This is fixed example prompting, not retrieval or model training.
 
-The project has a working Python/Flask prototype. It started in Jupyter on the LAUNCH cluster and now runs as a local web app.
+The app has a two-column editor, editable output, word counts, a copy button, light/dark mode, JSON export and a local AI detector. Highlight sentences is a toggle inside the revision editor. Editing clears stale highlights until the text is checked again.
 
-The app uses **Qwen2.5-3B-Instruct** to rewrite text with two options:
+Qwen runs on an NVIDIA GPU. Large GPUs use full weights; GPUs under 10 GB use 4-bit weights. The model downloads once to the normal Hugging Face cache and reloads into GPU memory when the app restarts.
 
-- **General rewrite:** Uses basic rewriting instructions.
-- **With my examples:** Includes personal writing samples in the prompt.
+## Writing data
 
-The current model has **not been fine-tuned**. These options use prompting, and DPO training is the next main step.
+There are ten LinkedIn pairs with `ID`, `Type`, `AI Version` and `Ethan Rewrite` columns. The saved split has six training pairs, two validation pairs and two test pairs. The app reads only the training split. This is enough to test the workflow, not enough to draw strong conclusions about personal style training.
 
-## Working Features
+The notebook and early experiments remain in `notebooks` and `results`. Student rewrites and public data should be reviewed and kept separate from my personal style examples.
 
-- Two-column editor for the original text and rewritten output.
-- Light and dark mode.
-- Word counts for both versions.
-- Editable output and a copy button.
-- JSON export for saving results.
-- Local model inference using an NVIDIA GPU.
+## Local detector
 
-The app has run successfully on an RTX 5070 Ti. Laptop setup is also underway for an RTX 4050 with 6 GB of GPU memory, which needs a lower-memory model configuration.
+The detector uses TF-IDF word and two-word phrase features with logistic regression. The preparation script reads the public `AI_Human.csv` dataset, filters length, removes exact normalized duplicates and samples up to 10,000 human and 10,000 AI passages. Related examples need shared group IDs where those are available. Hash IDs cannot prevent related authors or prompts from crossing splits when the source lacks those IDs.
 
-## Data
+Training uses five group-separated folds: three for training, one for validation and one for testing. The fitted vocabulary comes only from training. Reports include accuracy, false positives, AI recall, ROC AUC, Brier score and a split manifest.
 
-The personal dataset currently contains 10 LinkedIn posts, each with an AI version and my own rewrite.
+The original October 15 report is archived in `results/detector_previous_run`. It reported about 98.9% test accuracy on that dataset. It does not establish accuracy on LinkedIn posts, rewritten text or individual sentences.
 
-| Column | Contents |
-|---|---|
-| ID | Unique example number |
-| Type | Type of writing |
-| AI Version | Original AI-generated text |
-| Ethan Rewrite | My rewritten version |
+**The trained `models/ai_detector.joblib` file and large detector dataset are not included.** Restore the model from the laptop or use the included scripts to retrain. The app can rewrite without a detector.
 
-The notebook checks for missing and repeated entries, counts words, and creates training, validation, and test splits. The current split contains six training examples, two validation examples, and two test examples.
+## Scores and highlights
 
-This small dataset is useful for testing the workflow, but it is not enough to draw strong conclusions about model performance.
+The main status shows `Text flagged as AI-like`: words in flagged sentences divided by all words. The whole-passage classifier score is separate under Score details. Neither number proves authorship.
 
-A Google Form has been shared with my professor to collect more student rewrites. Each student chooses one AI-generated LinkedIn post and rewrites it in their own words. These responses will represent different writers, so they will be kept separate from my personal writing examples.
+Sentences of eight or more words are checked individually using the same passage classifier, with a 0.5 cutoff. Shorter fragments are unassessed. Sentence accuracy and the cutoff have not been validated on sentence-labeled data. No rule forces a set number of highlights, and a full-text score can differ from the share of text flagged.
 
-## Experiments So Far
+The detector uses its learned vocabulary and classifier. It does not reproduce ZeroGPT, measure perplexity/burstiness, or call an external detection API.
 
-I compared a basic rewrite prompt with a prompt containing three writing examples and saved the results.
-
-The example-based output showed some differences in wording and structure, but the early results do not yet show a clear improvement in matching my style.
-
-I am also reviewing public datasets, including De-GPT-DPO, for an initial training experiment. Any public data will need to be checked for quality and adapted to the rewriting task before use.
-
-## Training Plan
-
-The planned training method is **Direct Preference Optimization (DPO)**.
-
-Each training example will contain:
-
-- A rewriting request and its original text.
-- A preferred rewrite.
-- A less-preferred rewrite.
-
-Preferences will consider writing style, readability, and whether the rewrite preserves the original facts. A human-written response will not automatically be treated as better without reviewing it.
-
-The trained model will be compared with the existing prompting methods using the same held-out inputs. A second model or training method has not been finalized.
-
-## Evaluation
-
-The main questions are:
-
-- Does the rewrite sound like the intended writer?
-- Does it preserve the original meaning and facts?
-- Is it clear and readable?
-- How long does generation take?
-- How much GPU memory and context does it use?
-
-AI detector scores are being explored as an additional measurement. Automatic detector integration is not yet complete, and a detector score will not be treated as proof that text is human-written or as a measure of personal style.
-
-## Running the App
-
-After setting up the project’s Python environment and dependencies, run this from the repository’s main folder in PowerShell:
-
-```powershell
-.\start_app.bat
-```
-
-Then open:
-
-```text
-http://127.0.0.1:7860
-```
-
-Keep the terminal open while using the app.
-
-The model downloads on its first use and is cached for later sessions. Restarting the app still requires loading the model into memory.
-
-## Main Files
+## Files
 
 | File or folder | Purpose |
 |---|---|
-| `app.py` | Flask server and API routes |
-| `rewrite_engine.py` | Model loading, prompts, and text generation |
-| `web/` | Interface, styling, and browser code |
-| `check_gpu.py` | GPU availability and calculation check |
-| `start_app.bat` | Windows launcher |
-| `requirements-local.txt` | Local app dependencies |
-| `notebooks/` | Data checks and early experiments |
-| `data/` | Writing examples and dataset splits |
-| `results/` | Saved experiment outputs |
+| `app.py` | Local Flask app and rewrite endpoint |
+| `src/rewrite_engine.py` | Qwen loading, prompts and generation |
+| `src/ai_detector.py` | Detector loading, sentence results and API routes |
+| `web/` | Editor, theme, controls and inline highlights |
+| `setup_windows.bat` | Environment setup and GPU check |
+| `start_app.bat` | App launcher |
+| `scripts/train_detector.bat` | Prepare data and train a missing detector |
+| `scripts/prepare_detector_data.py` | Public CSV filtering and sampling |
+| `scripts/train_detector.py` | Fit, test and save the detector |
+| `data/` | Personal writing pairs and splits |
+| `notebooks/` | Original data checks and experiments |
+| `results/` | Saved experiments and archived training report |
+| `tests/` | Server, training pipeline and browser-logic checks |
 
-## Next Steps
+## Saved results
 
-- Review student responses when they arrive.
-- Prepare and check preference pairs for DPO.
-- Run a small training experiment.
-- Compare trained and untrained outputs on held-out examples.
-- Add an optional detector score to the interface.
-- Test empty inputs, long text, failed requests, and saved-result handling.
+The JSON export keeps the input, generated output, edited output, prompting method, example IDs, model, precision, token counts and generation time. It also keeps the original detector results and the latest edited-output check when it matches the current editor text. Editing does not retrain either model.
+
+Generation time excludes model loading and tokenization. Compare the same precision, prompts and generation settings across experiments. Inputs over 1,000 words or 20,000 characters are rejected; prompts above 7,000 tokens are rejected instead of silently truncated.
+
+## Next steps
+
+Evaluate the detector on separate LinkedIn writing, review more rewrite pairs, prepare DPO preferences and compare trained rewrites with the prompting baseline on held-out inputs. A second model or training method is still to be finalized.
+
+## Folder layout
+
+The root keeps the Flask entry point, README, requirements and Windows launchers.
+`src` contains the rewriting and detection code. `scripts` contains data preparation,
+training and the GPU check. `web` contains the interface. `docs` contains setup and
+verification notes. `requirements` contains detector-only and development dependencies.
+The optional Node test configuration lives in `tests`.
+
+Start the app from the root with `start_app.bat`. To train a missing detector, run
+`scripts\train_detector.bat` in PowerShell. This cleanup does not retrain either model.

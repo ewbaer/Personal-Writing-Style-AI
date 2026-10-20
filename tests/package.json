@@ -1,0 +1,1 @@
+{"private":true,"description":"Optional browser-logic tests; Node is not needed to run the app.","scripts":{"test":"node ui.cjs"},"devDependencies":{"jsdom":"26.1.0"}}

@@ -1,0 +1,1 @@
+For retraining, put the original Kaggle AI_Human.csv here. Its columns must be text and generated (0 = human, 1 = AI). Or copy the previously prepared detector_labeled.csv here instead. Large detector datasets are not included in this ZIP.

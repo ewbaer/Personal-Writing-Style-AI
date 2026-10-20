@@ -1,0 +1,34 @@
+{
+  "ai_detection": {
+    "original": {
+      "available": true,
+      "model_version": "2026-10-15T15:13:49.302477+00:00",
+      "note": "Experimental classifier score, not proof of authorship or percent of AI-written words. Not independently calibrated.",
+      "score": 77.8
+    },
+    "rewrite": {
+      "available": true,
+      "model_version": "2026-10-15T15:13:49.302477+00:00",
+      "note": "Experimental classifier score, not proof of authorship or percent of AI-written words. Not independently calibrated.",
+      "score": 77.4
+    }
+  },
+  "do_sample": false,
+  "example_ids": [
+    "1",
+    "2",
+    "3"
+  ],
+  "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+  "max_new_tokens": 1600,
+  "method": "examples",
+  "model": "Qwen/Qwen2.5-3B-Instruct",
+  "original": "I’m excited to share that I’ve officially wrapped up my Software Engineering Internship at NVIDIA!\nThis summer gave me the opportunity to work alongside incredibly talented engineers and contribute to projects that challenged me to think differently about software development. I spent a lot of time writing and debugging code, working through technical problems, reviewing existing systems, and learning how software is developed at a much larger scale than anything I had experienced before.\nOne of the biggest things I took away from the internship was how important collaboration is in engineering. Writing good code matters, but being able to explain your ideas, ask the right questions, understand feedback, and work through problems with a team is just as important.\nI also gained a much better understanding of what goes into building reliable and high-performance software. There were plenty of moments where I didn’t immediately know the answer, but those ended up being some of the best learning experiences because they forced me to dig deeper and become more comfortable figuring things out on my own.\nI’m extremely grateful to everyone at NVIDIA who answered my questions, reviewed my work, and helped me grow throughout the internship.\nI’m leaving this experience as a much stronger developer and even more excited about continuing my career in software engineering.\nThank you to everyone who made this experience possible!",
+  "output_tokens": 242,
+  "prompt_tokens": 2103,
+  "rewrite": "I'm super excited to share that I finished my Software Engineering Internship at NVIDIA this summer!\n\nIt was amazing to work alongside such talented engineers and help out with projects that really pushed me to think differently about coding. I spent a lot of time writing and debugging code, tackling tough tech problems, reviewing old systems, and learning how big companies develop software.\n\nOne of the biggest things I learned was how crucial teamwork is in engineering. Sure, writing good code is important, but being able to explain your ideas clearly, ask the right questions, listen to feedback, and work through problems as a team is equally vital.\n\nI also got a much better grasp on building reliable and high-performance software. There were times when I didn't know the answer right away, but those moments turned out to be some of the best learning experiences. They taught me to dig deeper and feel more comfortable figuring things out on my own.\n\nI'm really grateful to everyone at NVIDIA who helped me out – answering my questions, reviewing my work, and helping me grow during the internship. I feel like I'm a much stronger developer now and can't wait to keep going in software engineering.\n\nThanks to everyone who made this experience possible!",
+  "seconds": 223.87,
+  "truncated": false,
+  "edited_rewrite": "I'm super excited to share that I finished my Software Engineering Internship at NVIDIA this summer!\n\nIt was amazing to work alongside such talented engineers and help out with projects that really pushed me to think differently about coding. I spent a lot of time writing and debugging code, tackling tough tech problems, reviewing old systems, and learning how big companies develop software.\n\nOne of the biggest things I learned was how crucial teamwork is in engineering. Sure, writing good code is important, but being able to explain your ideas clearly, ask the right questions, listen to feedback, and work through problems as a team is equally vital.\n\nI also got a much better grasp on building reliable and high-performance software. There were times when I didn't know the answer right away, but those moments turned out to be some of the best learning experiences. They taught me to dig deeper and feel more comfortable figuring things out on my own.\n\nI'm really grateful to everyone at NVIDIA who helped me out – answering my questions, reviewing my work, and helping me grow during the internship. I feel like I'm a much stronger developer now and can't wait to keep going in software engineering.\n\nThanks to everyone who made this experience possible!",
+  "saved_at": "2026-10-15T15:49:54.447Z"
+}

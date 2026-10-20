@@ -1,10 +1,11 @@
 """Qwen inference extracted from Ethan's notebook. No training happens here."""
 import csv
+import os
 import threading
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+from .paths import ROOT
 MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
 INSTRUCTION = (
     "Rewrite the supplied text in the user's writing style. "
@@ -78,11 +79,30 @@ class RewriteEngine:
         import torch
         from transformers import AutoTokenizer, AutoModelForCausalLM
         if not torch.cuda.is_available():
-            raise RuntimeError("No CUDA GPU detected. Run check_gpu.py using the app's .venv.")
+            raise RuntimeError("No CUDA GPU detected. Run scripts/check_gpu.py using the app's .venv.")
         tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
-        model = AutoModelForCausalLM.from_pretrained(
-            MODEL_ID, dtype=torch.bfloat16, device_map={"": 0}
-        ).eval()
+        # Keep inference on the GPU. Smaller GPUs use 4-bit weights rather
+        # than silently spilling layers into slow CPU/RAM offload.
+        free_bytes, total_bytes = torch.cuda.mem_get_info(0)
+        precision = os.environ.get("WRITING_PRECISION", "auto").lower()
+        if precision not in {"auto", "full", "4bit"}:
+            raise RuntimeError("WRITING_PRECISION must be auto, full, or 4bit.")
+        use_4bit = precision == "4bit" or (precision == "auto" and total_bytes < 10 * 1024**3)
+        compute_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+        kwargs = dict(dtype=compute_dtype, device_map={"": 0})
+        if use_4bit:
+            try:
+                import bitsandbytes  # noqa: F401
+            except ImportError as error:
+                raise RuntimeError("This GPU needs 4-bit loading. Run setup_windows.bat to install bitsandbytes.") from error
+            from transformers import BitsAndBytesConfig
+            kwargs["quantization_config"] = BitsAndBytesConfig(
+                load_in_4bit=True, bnb_4bit_quant_type="nf4",
+                bnb_4bit_use_double_quant=True, bnb_4bit_compute_dtype=compute_dtype)
+        elif free_bytes < 7 * 1024**3:
+            raise RuntimeError("Not enough free VRAM for full weights. Close other GPU programs, or set WRITING_PRECISION=4bit.")
+        model = AutoModelForCausalLM.from_pretrained(MODEL_ID, **kwargs).eval()
+        self.precision = "4bit" if use_4bit else str(compute_dtype).replace("torch.", "")
         self.tokenizer, self.model = tokenizer, model
 
     def rewrite(self, text, method):
@@ -127,6 +147,6 @@ class RewriteEngine:
                         example_ids=example_ids, seconds=round(seconds, 2),
                         prompt_tokens=prompt_tokens, output_tokens=len(response),
                         truncated=truncated, gpu=torch.cuda.get_device_name(0),
-                        max_new_tokens=1600, do_sample=False)
+                        max_new_tokens=1600, do_sample=False, precision=self.precision)
         finally:
             self.lock.release()

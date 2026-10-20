@@ -51,6 +51,7 @@ $('rewrite').addEventListener('click', async () => {
   if (!text) return status('Paste some text first.', true);
   if (count(text) > 1000) return status('Use 1,000 words or fewer.', true);
   result = null; $('rewritten').value = ''; $('runDetails').textContent = 'Rewrite in progress.'; setBusy(true);
+  window.writingSignals?.reset('Waiting for the rewrite…');
   status('Preparing your revision… First use can take a few minutes.');
   try {
     const response = await fetch('/api/rewrite', {
@@ -60,16 +61,17 @@ $('rewrite').addEventListener('click', async () => {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Rewrite failed.');
     result = data; $('rewritten').value = data.rewrite;
+    window.writingSignals?.accept(data);
     const warning = data.truncated ? ' Output hit its length limit; check the ending.' : '';
     $('runDetails').textContent = `${data.model}\n${data.gpu} · ${data.seconds}s generation\n${data.example_ids.length} examples · ${data.prompt_tokens} input tokens · ${data.output_tokens} output tokens`;
     status(`Revision ready.${warning}`, data.truncated);
-  } catch (error) { $('runDetails').textContent = 'The last rewrite did not finish.'; status(error.message || 'Could not reach the app. Check its terminal.', true); }
+  } catch (error) { window.writingSignals?.reset('Rewrite failed; no detection result.'); $('runDetails').textContent = 'The last rewrite did not finish.'; status(error.message || 'Could not reach the app. Check its terminal.', true); }
   finally { setBusy(false); }
 });
 $('save').addEventListener('click', () => {
   if (!result) return;
   // Keep generated text separate from edits; edits do not automatically retrain the model.
-  const saved = {...result, edited_rewrite: $('rewritten').value, saved_at: new Date().toISOString()};
+  const saved = {...result, edited_rewrite: $('rewritten').value, edited_ai_detection: window.writingSignals?.snapshot() || null, saved_at: new Date().toISOString()};
   const url = URL.createObjectURL(new Blob([JSON.stringify(saved, null, 2)], {type:'application/json'}));
   const a = document.createElement('a'); a.href = url; a.download = `rewrite-${Date.now()}.json`; a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);

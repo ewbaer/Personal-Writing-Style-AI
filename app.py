@@ -2,11 +2,13 @@
 import threading
 import webbrowser
 from flask import Flask, jsonify, request, send_from_directory
-from rewrite_engine import ROOT, RewriteEngine
+from src.rewrite_engine import ROOT, RewriteEngine
+from src.ai_detector import register_detector
 
 app = Flask(__name__, static_folder=str(ROOT / "web"), static_url_path="/web")
 app.config["MAX_CONTENT_LENGTH"] = 100000
 engine = RewriteEngine()
+register_detector(app)
 
 
 @app.get("/")
@@ -33,6 +35,11 @@ def rewrite():
         else:
             message = "Could not rewrite: " + str(error)
         return jsonify(error=message), 500
+
+
+@app.errorhandler(413)
+def too_large(error):
+    return jsonify(error="Request too large. Use 1,000 words or fewer."), 413
 
 
 if __name__ == "__main__":

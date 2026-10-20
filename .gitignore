@@ -216,3 +216,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local app, detector artifacts and optional UI test packages
+.venv-old/
+models/*.joblib
+data/AI_Human.csv
+data/detector_labeled.csv
+data/detector_labeled.report.json
+node_modules/

@@ -1,0 +1,10 @@
+Your original trained detector was not uploaded or committed to GitHub.
+Copy models/ai_detector.joblib from your laptop into this folder.
+Keep scikit-learn 1.7.2, the version used by the supplied training environment.
+If loading fails because your original environment used another version, use
+that environment's versions or retrain with the included script. Only load a
+joblib file you trust; joblib deserialization can execute Python code.
+
+Alternatively copy AI_Human.csv into data/ and run train_detector.bat.
+The app can rewrite without the detector and shows "Detector not trained yet."
+No placeholder detector or fabricated trained weights are included.
