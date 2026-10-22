@@ -68,6 +68,21 @@ This is the current hosted workflow. Input checks and step order are controlled 
 
 ```mermaid
 graph TD
+    INPUT["Draft and method"] --> VALID{"Valid input?"}
+    VALID -->|No| ERROR["Show error"]
+    VALID -->|Yes| PROMPT["Build prompt with optional examples"]
+    PROMPT --> REWRITE["Queue and stream Qwen rewrite"]
+    REWRITE --> DETECT["Check writing signals on CPU"]
+    DETECT --> EDIT["Review, edit and toggle highlights"]
+    EDIT -->|Check edits| DETECT
+    EDIT --> SAVE["Copy or export JSON"]
+```
+
+<details>
+<summary>View the full workflow, including checks and error paths</summary>
+
+```mermaid
+graph TD
     START["Paste a draft and choose a writing method"] --> VALID{"Text within input limits?"}
     VALID -->|No| ERROR["Show a helpful error"]
     VALID -->|Yes| METHOD{"Use writing examples?"}
@@ -95,6 +110,8 @@ graph TD
     HIGHLIGHT --> REVIEW
     ACTION -->|Copy or export| SAVE["Copy revision or download experiment JSON"]
 ```
+
+</details>
 
 Input limits are 1,000 words and 20,000 characters. The completed prompt must fit within 7,000 tokens. Example loading is conditional on the selected method; missing or unusable examples stop that request. The model loads once at app startup, rather than downloading for every rewrite. Generation is limited to 1,200 new tokens by default.
 
