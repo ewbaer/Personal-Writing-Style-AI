@@ -1,0 +1,24 @@
+{
+  "source": "https://huggingface.co/spaces/ewbaer/personal-writing-style-ai",
+  "commit": "825632398b5ac13339cf12b61a26b74fc1f739f7",
+  "copied_date": "2026-10-22",
+  "sha256": {
+    ".gitattributes": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361",
+    "README.md": "752c8ab0ad3c1bd8a8567f804ebf963bb4d0449aa5dc1211984a54fa87e17533",
+    "app.py": "f2640af2a04768fbbb8f75ffd87806cba572bd9cce836bddf3fc955914fe17fe",
+    "data/splits/train.csv": "258dd6d3cdfaed0731a364c4f9bfbeb9055b250a875bda0824881e327c4cd20e",
+    "docs/DEPLOY.md": "c0f33c644db9ac132b2ab2691e89af885204c565ec40d5ed6268cb845405d3e0",
+    "docs/TEST_REPORT.md": "da3d999aa0fa3ecabfea967efd5635cbccdbdcd116674bc41a63029297fbdd3f",
+    "models/ai_detector.joblib": "5ff0acf365c6359ecaa0ae48b6ee31a6a62da0bc6d2fb00d2ec5a57730e627ca",
+    "requirements.txt": "4f7abda9bc109705b2d04c97033a1a0d90b40ff55b55d2618bcc647bd7592e4f",
+    "src/__init__.py": "87de09056d83e713a56cffc002062c95f8c22a2ad25749131bf12d41d603211e",
+    "src/ai_detector.py": "9d62569c558fb8c65f465a8675b6bdcf9622af200c986244ac57a2c3cc300910",
+    "src/hosted_engine.py": "34d7f8cf84937b68d96192fee4f28308ce941807aa5f0e6c5b444f8a54c00765",
+    "src/paths.py": "b6cd5426fe4f513bd8eb83fcfa1bbcdc04fcf66192624b291ac62543a226e7ad",
+    "src/rewrite_engine.py": "29e6a2be5558642b52a7e618b3c1bb8a61e65651249eaa3e373c11ec25c0c773",
+    "tests/browser_check.py": "041cf7a3b88186ef94a459d0c525b9c6b19977d1be05f2a1ef99900bca00884d",
+    "tests/make_tiny_model.py": "b1d6d5dd7bc369305275333f93577978263c987c22320c7f14382a85db8bb9f6",
+    "tests/queue_check.py": "b75508a3622fc4605c27a20b66ba1ea5048f037d2ed1495433c0ac4853e1d4c9",
+    "tests/test_hosted.py": "3e47c023e2c0bb83731454eceaac8018be31fc7e1bbef07d3eb61114dc7952db"
+  }
+}
