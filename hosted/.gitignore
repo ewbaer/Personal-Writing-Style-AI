@@ -1,6 +1,6 @@
-!.gitignore
-!models/
-!models/ai_detector.joblib
 .venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+.env
+test-output/

@@ -17,37 +17,61 @@ tags:
   - zerogpu
 ---
 
-# Writing desk (hosted version)
+# Writing desk
 
-Hosted copy of the Personal Writing Style AI project for class use. It rewrites a
-pasted draft in Ethan's writing style with Qwen2.5-3B-Instruct, then scores the
-original and the revision with a locally trained TF-IDF + logistic regression
-detector. The revision is editable, can be re-checked without running Qwen again,
-and flagged sentences can be highlighted.
+Rewrite a draft with Qwen2.5-3B-Instruct, edit the revision, and check writing signals with a trained TF-IDF and logistic regression classifier. The app supports optional example prompting and light/dark themes.
 
-Source project: https://github.com/ewbaer/Personal-Writing-Style-AI
+[Open the app](https://huggingface.co/spaces/ewbaer/personal-writing-style-ai)
 
-## How it runs here
+## Current implementation
 
-- Gradio app on Hugging Face ZeroGPU. The model is loaded in bf16 at startup and
-  generation runs inside a `@spaces.GPU` function.
-- Requests wait in a queue and run one at a time. Gradio shows your place in line.
-- Each visitor has a daily ZeroGPU time budget set by Hugging Face. Signing in to
-  Hugging Face gives more time than anonymous use.
-- The detector runs on CPU and does not use GPU time.
+- Gradio UI with original/revision editors, streaming, word counts, highlights, copying and JSON exports.
+- One queued rewrite at a time on Hugging Face ZeroGPU. Multiple visitors have separate session state.
+- A Cancel button and cancellation when Clear is selected. Generation stops cooperatively at a token boundary.
+- A unique run ID, prompt version, settings, timestamps, completed steps and safe error records for each rewrite.
+- Detector checks run on CPU. A failed check keeps the rewrite available for manual rechecking.
+- Explicit JSON downloads include model output and user edits separately. Editing does not retrain the model.
 
-## Limits
+The rewrite model still uses prompting. The desktop SFT adapter is not loaded and DPO training has not started in this Space. The detector score is an experimental classifier output, not proof of authorship. Sentence scores and passage scores can disagree.
 
-- Up to 1,000 words or 20,000 characters per request.
-- Up to 1,200 new tokens per rewrite. Longer output is marked as cut off.
-- The detector needs at least 50 words. Its score is an experimental classifier
-  output, not proof of authorship.
-- The rewrite model has not been DPO-trained. "My examples" adds up to three
-  writing pairs to the prompt. This is fixed example prompting, not retrieval.
+## Code structure
 
-## Optional: keep the writing examples out of the public files
+| Location | Purpose |
+| --- | --- |
+| `app.py` | Creates production services and launches the UI. |
+| `src/ui.py`, `src/ui_assets.py`, `web/` | Layout, theme, controls and styles. |
+| `src/controller.py`, `src/presentation.py` | Gradio updates and display formatting. |
+| `src/workflow.py`, `src/records.py` | Ordered processing, run state and retry rules. |
+| `src/contracts.py` | Rewrite, detector and export service interfaces. |
+| `src/config.py`, `src/validation.py`, `src/prompts.py` | Shared limits, validation and versioned prompts. |
+| `src/runtime.py`, `src/hosted_engine.py` | Startup model loading and ZeroGPU streaming. |
+| `src/ai_detector.py`, `models/ai_detector.joblib` | Saved CPU detector and sentence checks. |
+| `src/exports.py` | UUID-named user-controlled downloads and expiry cleanup. |
+| `tests/` | Workflow, detector, UI and tiny-model checks. |
 
-By default the app reads `data/splits/train.csv` from this repository. To keep the
-examples private, delete that file from the Space, upload it as `train.csv` to a
-private dataset repository, and add two Space secrets: `WRITING_EXAMPLES_REPO`
-(for example `ewbaer/writing-examples`) and `HF_TOKEN` (a read token).
+[Architecture checks and request flow](docs/ARCHITECTURE.md) · [Test report](docs/TEST_REPORT.md) · [Upload instructions](docs/UPLOAD.md)
+
+## Limits and state
+
+Input must contain at most 1,000 words and 20,000 characters. Prompts including examples must fit within 7,000 tokens. Rewrites allow 1,200 new tokens by default. Cut-off output is marked. Detector passages need at least 50 words; fragments under eight words are unassessed.
+
+Run records live in browser-session state, not a history database. Restarting or refreshing can lose that state. Export results to keep them. Export files are temporary and cleaned up after their retention period; download links are not a protected account history. Do not share private export links. Stop is cooperative; an in-flight operation may finish before generation ends.
+
+## Examples and settings
+
+The public example file is `data/splits/train.csv`. No API key is needed for the included model and examples. For private examples, remove that CSV and configure `WRITING_EXAMPLES_REPO` and the read-only `HF_TOKEN` secret in Space settings.
+
+- `WRITING_MODEL_ID`: defaults to `Qwen/Qwen2.5-3B-Instruct`.
+- `WRITING_MAX_NEW_TOKENS`: defaults to `1200`.
+
+The model loads once at startup in full precision appropriate to the device. Local execution uses your device, not the hosted GPU. Keep the hosted environment separate from the desktop training environment.
+
+## Tests
+
+Install the Space dependencies, Gradio 6.30.0 and pytest in a separate environment, then run:
+
+```shell
+python -m pytest tests/test_hosted.py -q
+```
+
+Those tests inject small services and use the real saved detector; they do not download Qwen. `tests/make_tiny_model.py` creates a random tiny model for a real Transformers streaming check. Its meaningless output must not be used to judge rewriting quality. See the test report for what was actually run.

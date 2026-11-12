@@ -1,4 +1,4 @@
-"""Qwen inference for the Hugging Face ZeroGPU Space.
+"""Rewrite inference for the Hugging Face ZeroGPU Space.
 
 Differences from the local rewrite_engine.py:
 - The model is loaded once at startup and placed on CUDA at module level,
@@ -21,22 +21,14 @@ from pathlib import Path
 import torch
 
 from .paths import ROOT
-from .rewrite_engine import MODEL_ID, build_messages, load_examples
-
-MAX_WORDS = 1000
-MAX_CHARS = 20000
-MAX_PROMPT_TOKENS = 7000
-# Lower than the local 1,600 so one request cannot hold the GPU too long.
-MAX_NEW_TOKENS = int(os.environ.get("WRITING_MAX_NEW_TOKENS", "1200"))
-
-
-def validate_text(text):
-    if not isinstance(text, str) or not text.strip():
-        raise ValueError("Paste some text first.")
-    text = text.strip()
-    if len(text) > MAX_CHARS or len(text.split()) > MAX_WORDS:
-        raise ValueError("Use 1,000 words or fewer (and under 20,000 characters).")
-    return text
+from .config import SETTINGS, model_profiles
+from .prompts import build_messages, load_examples
+from .model_backend import load_base, attach_adapter, training_messages, REWRITE_PREFIX
+from .validation import validate_text
+MAX_WORDS = SETTINGS.max_words
+MAX_CHARS = SETTINGS.max_chars
+MAX_PROMPT_TOKENS = SETTINGS.max_prompt_tokens
+MAX_NEW_TOKENS = SETTINGS.max_new_tokens
 
 
 def examples_path():
@@ -65,31 +57,44 @@ def gpu_seconds(text, method):
 
 
 class HostedEngine:
-    def __init__(self):
+    def __init__(self, profile=None):
+        self.profile = profile or next(model_profiles())
         self.model = self.tokenizer = None
         self.precision = None
         self.load_error = None
-        self.model_id = os.environ.get("WRITING_MODEL_ID", MODEL_ID)
+        self.model_id = self.profile.model_id
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
     def load(self):
         """Call once at import time, before the Gradio app starts."""
         try:
-            from transformers import AutoModelForCausalLM, AutoTokenizer
-            tokenizer = AutoTokenizer.from_pretrained(self.model_id)
             dtype = torch.bfloat16 if self.device == "cuda" else torch.float32
-            model = AutoModelForCausalLM.from_pretrained(self.model_id, dtype=dtype)
+            tokenizer, model = load_base(self.model_id, self.profile.base_revision, dtype=dtype,
+                                         attn_implementation="sdpa")
+            if self.profile.adapter:
+                # ZeroGPU has no real CUDA device during startup. Load the
+                # adapter on CPU before staging the complete model on CUDA.
+                model = attach_adapter(model, self.model_id, self.profile.adapter,
+                                       self.profile.adapter_revision, self.profile.base_revision,
+                                       token=os.environ.get("HF_TOKEN"))
             model.to(self.device).eval()
             self.precision = str(dtype).replace("torch.", "")
             self.tokenizer, self.model = tokenizer, model
-        except Exception as error:  # Keep the detector usable even if Qwen fails.
+        except Exception as error:  # Keep the detector usable if the model fails.
             self.load_error = f"{type(error).__name__}: {error}"
+            import logging
+            logging.getLogger(__name__).exception("Rewrite model failed to load: %s", self.profile.key)
 
     def prepare(self, text, method):
         """Validation and prompt building. Runs on CPU before any GPU time."""
         text = validate_text(text)
-        examples = load_examples(examples_path()) if method == "examples" else []
-        messages, example_ids = build_messages(text, method, examples)
+        if self.profile.experiment_prompt:
+            if method != "basic":
+                raise ValueError("This experiment uses General rewrite only.")
+            messages, example_ids = training_messages(REWRITE_PREFIX + text), []
+        else:
+            examples = load_examples(examples_path()) if method == "examples" else []
+            messages, example_ids = build_messages(text, method, examples)
         if self.model is None:
             raise RuntimeError("The rewrite model is not loaded. " + (self.load_error or ""))
         tokens = self.tokenizer.apply_chat_template(
@@ -105,19 +110,25 @@ class HostedEngine:
 
         Must run inside the @spaces.GPU function so real CUDA is available.
         """
-        from transformers import TextIteratorStreamer
+        from transformers import TextIteratorStreamer, StoppingCriteria, StoppingCriteriaList
         tokens = tokens.to(self.model.device)
         prompt_tokens = tokens["input_ids"].shape[1]
         streamer = TextIteratorStreamer(self.tokenizer, skip_prompt=True,
                                         skip_special_tokens=True)
         holder = {}
+        stop = threading.Event()
+
+        class StopRequested(StoppingCriteria):
+            def __call__(self, input_ids, scores, **kwargs):
+                return stop.is_set()
+
 
         def run():
             try:
                 with torch.inference_mode():
                     holder["output"] = self.model.generate(
                         **tokens, max_new_tokens=MAX_NEW_TOKENS, do_sample=False,
-                        streamer=streamer, pad_token_id=self.tokenizer.eos_token_id)
+                        streamer=streamer, stopping_criteria=StoppingCriteriaList([StopRequested()]), pad_token_id=(self.tokenizer.pad_token_id if self.tokenizer.pad_token_id is not None else self.tokenizer.eos_token_id))
             except Exception as error:
                 holder["error"] = error
                 streamer.end()
@@ -129,12 +140,17 @@ class HostedEngine:
         thread = threading.Thread(target=run, daemon=True)
         thread.start()
         pieces = []
-        for piece in streamer:
-            if first_token is None and piece:
-                first_token = time.perf_counter() - started
-            pieces.append(piece)
-            yield "".join(pieces)
-        thread.join()
+        try:
+            for piece in streamer:
+                if first_token is None and piece:
+                    first_token = time.perf_counter() - started
+                pieces.append(piece)
+                yield "".join(pieces)
+        finally:
+            # Closing/cancelling the generator asks transformers to stop at the next token.
+            # Join before releasing the GPU slot, including on errors and disconnects.
+            stop.set()
+            thread.join()
         if self.device == "cuda":
             torch.cuda.synchronize()
         seconds = time.perf_counter() - started
@@ -152,4 +168,6 @@ class HostedEngine:
                    first_token_seconds=round(first_token, 2) if first_token else None,
                    output_tokens=int(len(response)), truncated=truncated, gpu=gpu,
                    max_new_tokens=MAX_NEW_TOKENS, do_sample=False,
-                   precision=self.precision, model=self.model_id)
+                   precision=self.precision, model=self.model_id, model_key=self.profile.key,
+                   base_revision=self.profile.base_revision, adapter_loaded=bool(self.profile.adapter),
+                   adapter_revision=self.profile.adapter_revision)

@@ -5,6 +5,7 @@ import re
 import joblib
 
 from .paths import ROOT
+from .config import SETTINGS
 
 class AIDetector:
     def __init__(self):
@@ -15,9 +16,9 @@ class AIDetector:
     def score(self, text):
         if not isinstance(text, str) or not text.strip():
             return {'available': False, 'message': 'No text to check.'}
-        if len(text) > 30000:
+        if len(text) > SETTINGS.detector_max_chars:
             return {'available': False, 'message': 'Use 30,000 characters or fewer.'}
-        if len(text.split()) < 50:
+        if len(text.split()) < SETTINGS.detector_min_words:
             return {'available': False, 'message': 'Use at least 50 words for this detector.'}
         with self.lock:
             if self.bundle is None:
@@ -47,7 +48,7 @@ class AIDetector:
         sentences = [text[start:end] for start, end in spans]
         # The current model learned passages, so isolated sentence scores are
         # explicitly experimental. Very short fragments are left unassessed.
-        eligible = [i for i, sentence in enumerate(sentences) if len(sentence.split()) >= 8]
+        eligible = [i for i, sentence in enumerate(sentences) if len(sentence.split()) >= SETTINGS.sentence_min_words]
         ai_index = list(model.classes_).index(1)
         values = model.predict_proba([sentences[i] for i in eligible])[:, ai_index] if eligible else []
         scores = dict(zip(eligible, values))
@@ -57,7 +58,7 @@ class AIDetector:
             details.append({'text': sentence, 'start': spans[i][0], 'end': spans[i][1],
                             'score': round(float(value)*100, 1) if value is not None else None,
                             'assessed': value is not None,
-                            'highlight': bool(value >= 0.5) if value is not None else False})
+                            'highlight': bool(value >= SETTINGS.sentence_threshold) if value is not None else False})
         # Attribute each whitespace-delimited word once, even if punctuation
         # splits a word into multiple spans (for example 'Hello.World').
         words = list(re.finditer(r'\S+', text))
@@ -76,7 +77,7 @@ class AIDetector:
                 'unassessed_words': max(0, total_words-assessed_words),
                 'flagged_count': sum(d['highlight'] for d in details),
                 'assessed_count': len(eligible), 'sentence_count': len(details),
-                'sentence_threshold': 0.5, 'sentence_method': 'isolated_sentence_experimental',
+                'sentence_threshold': SETTINGS.sentence_threshold, 'sentence_method': 'isolated_sentence_experimental',
                 'explanation': 'Percentage is the share of words in flagged sentences, not verified AI authorship. The passage classifier and cutoff have not been validated on individual sentences. Fragments under 8 words are unassessed, not classified as human.'}
 
 

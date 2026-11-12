@@ -43,11 +43,11 @@ with sync_playwright() as p:
     page.screenshot(path=str(shots / "02-revision-ready.png"))
     text = revision.input_value()
     assert text.strip(), "revision box is empty"
-    page.get_by_text("Workspace settings").click()
+    page.get_by_role("button", name="Settings", exact=True).click()
     page.wait_for_timeout(800)
     body = page.inner_text("body")
     assert "s generation" in body and "to first token" in body, body[-800:]
-    page.get_by_text("Workspace settings").click()
+    page.get_by_role("button", name="Settings", exact=True).click()
 
     # Detector on the edited output and highlights.
     revision.fill(PASSAGE[:-1])
@@ -60,12 +60,12 @@ with sync_playwright() as p:
     page.get_by_text("Highlight sentences").click()
     page.wait_for_timeout(1500)
     page.screenshot(path=str(shots / "03-highlights.png"))
-    assert page.locator(".highlight-box").is_visible()
+    assert page.locator(".hl-box").is_visible()
 
     # Theme toggle and settings panel.
-    page.get_by_role("button", name="Light / dark").click()
+    page.get_by_role("button", name="◐", exact=True).click()
     page.wait_for_timeout(500)
-    page.get_by_text("Workspace settings").click()
+    page.get_by_role("button", name="Settings", exact=True).click()
     page.wait_for_timeout(800)
     page.screenshot(path=str(shots / "04-settings-other-theme.png"), full_page=True)
     assert "Download experiment data" in page.inner_text("body")

@@ -54,14 +54,29 @@ Every rewrite goes through input validation, prompt building, the GPU queue, and
 
 ## Run it locally
 
-The GitHub repo contains the earlier Windows Flask app at the root and a snapshot of the hosted Gradio app in `hosted/`. The live Space is the easiest way to try the deployed adapters. Changes made in Hugging Face do not automatically sync to GitHub.
+The repo has two versions. The root Flask app is the earlier Windows version. The [`hosted/`](hosted/) folder is the Gradio app copied from [Space commit `016c7ef`](https://huggingface.co/spaces/ewbaer/personal-writing-style-ai/commit/016c7ef5763c7dc2a0f9c0ebd6e395b4009fc324). The [sync manifest](docs/HOSTED_SYNC.json) records the exact files and hashes. Changes to the Space do not automatically update GitHub.
 
 ```powershell
+git lfs install
 git clone https://github.com/ewbaer/Personal-Writing-Style-AI.git
 cd Personal-Writing-Style-AI
+git lfs pull
 ```
 
-For the earlier Flask version, run `.\setup_windows.bat` once, then `.\start_app.bat`. For the Gradio snapshot, use the dependencies and launch instructions in [hosted/README.md](hosted/README.md). Local runs use your own hardware. The trained rewrite adapters are stored separately on Hugging Face; a deployment that loads the private adapters needs an `HF_TOKEN` with read access, stored as a Space secret.
+For the earlier Flask version on Windows, run `setup_windows.bat` once, then `start_app.bat`.
+
+For the Gradio app, the live demo is the easiest option. To run the snapshot locally, use Python 3.12 and a compatible PyTorch setup. From the repo root, go into `hosted/`, install its `requirements.txt` plus `gradio==6.30.0` in a separate environment, and run `python app.py`. Local runs use your own hardware. Git LFS provides the saved detector file in `hosted/models/`.
+
+The hosted code and detector are included. The fine-tuned rewrite weights live in separate private Hugging Face model repos, so cloning this repo does not give you the same trained models automatically. A separate deployment needs its own Space configuration:
+
+| Setting | What it controls |
+| --- | --- |
+| `WRITING_ADAPTER` | Qwen adapter repo or local directory |
+| `WRITING_ARM2_ADAPTER` | Ministral adapter repo or local directory; enables the ARM 2 option |
+| `WRITING_ARM2_MODEL_REVISION` | Ministral base model commit used for training |
+| `HF_TOKEN` | Space secret with read access to both private adapter repos |
+
+The README inside `hosted/` includes the original Space launch metadata and was preserved as part of the snapshot. Use this root README for the current overview of both models.
 
 ## Limits and next steps
 

@@ -37,5 +37,8 @@ for t in threads:
     t.join()
 for i in sorted(results):
     print(i, results[i])
-ok = all(r["rewritten"] and r["status"].startswith("Revision ready") for r in results.values())
+ok = len(results) == N and all(r["rewritten"] and r["status"].startswith("Revision ready") for r in results.values())
 print("all finished:", ok, "| wall time", round(time.perf_counter() - started, 1), "s")
+
+if not ok:
+    raise SystemExit(1)
